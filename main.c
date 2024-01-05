@@ -537,7 +537,7 @@ void manageCustomers(void) {
                 printf("Enter customer name: ");
                 gotoxy(20,19);
                 fgets(newCustomer.name, sizeof(newCustomer.name), stdin ) ;
-                newCustomer.name[ strcspn( newCustomer.name,"\n" ) ] = '\0' ;
+                newCustomer.name[ strcspn( newCustomer.name,"\n" ) ] = '\0' ; // strcspn to calculate occurences in 1st string before 2nd string occurrs.
                 gotoxy( 20 , 21 ) ;
                 printf("Enter customer phone_number: ") ;
                 fgets(newCustomer.phoneNumber, sizeof(newCustomer.phoneNumber), stdin ) ;
