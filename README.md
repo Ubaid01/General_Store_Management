@@ -1,4 +1,4 @@
-# General_Store_Management
+# General_OR_Kiryana_Store_Management_System
 This is my basic first year project on Basic Kiryana OR General Store Management System coded in C.
 <br>
 This repository contains a C-based General Store Management System that serves as a comprehensive tool for managing inventory, customers, discounts, and administrative functions. Developed by Me(M.Obaid), this system offers a user-friendly interface for both customers and administrators.
