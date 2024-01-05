@@ -13,5 +13,5 @@ For new customers, the system prompts for account creation, including name, phon
 Existing customers can log in using their registered phone numbers and PIN to shop seamlessly.<br>
 This system ensures a secure and streamlined shopping experience for customers while granting administrative control over store operations. <br>
 # Credits:
-Integration Credits: Akhyar contributed to the admin interface design integration.<br>
+Integration Credits: Akhyar contributed to the some admin interface design integration.<br>
 Feel free to explore and utilize this system for effective store management!
