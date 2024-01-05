@@ -1,0 +1,62 @@
+Name : ObaidCheckout Date and Time: Mon Jan 01 14:32:16 2024
+ID   |   Name   | Price  | Quantity
+4   | Rice       | 550.55 | 1  
+------------------------------------
+Name : 23	Checkout Date and Time: Wed Jan 03 11:59:48 2024
+ID   |   Name   | Price  | Quantity
+DD_123 | Almonds    | 750.00 | 2  
+------------------------------------
+Name : Mubashir		Checkout Date and Time: Thu Jan 04 08:31:26 2024
+ID   |   Name   | Price  | Quantity
+DD_104 | Eggs       | 488.66 | 6  
+------------------------------------
+Name : ABC		Checkout Date and Time: Thu Jan 04 14:16:01 2024
+ID   |   Name   | Price  | Quantity
+SK_302 | Biscuits   | 18.90 | 5  
+------------------------------------
+Name : ABC		Checkout Date and Time: Thu Jan 04 14:25:16 2024
+ID   |   Name   | Price  | Quantity
+BV_404 | Coffee     | 100.00 | 1  
+------------------------------------
+Name : ABC		Checkout Date and Time: Thu Jan 04 14:38:12 2024
+ID   |   Name   | Price  | Quantity
+BV_404 | Coffee     | 100.00 | 5  
+SK_303 | Refreshments_Pack | 30.00 | 10 
+------------------------------------
+Name : ABC		Checkout Date and Time: Thu Jan 04 14:45:02 2024
+ID   |   Name   | Price  | Quantity
+SK_302 | Biscuits   | 18.90 | 2  
+GC_201 | Rice       | 380.75 | 1  
+------------------------------------
+Name : ABC		Checkout Date and Time: Thu Jan 04 14:46:39 2024
+ID   |   Name   | Price  | Quantity
+BV_402 | Juice      | 55.10 | 3  
+------------------------------------
+
+  (New Customer ) Name : Ali		Checkout Date and Time: Thu Jan 04 21:30:44 2024
+ID     |     Name     |  Price  | Quantity
+GC_201 | Rice         | 380.75  | 1  
+			Total Purchase Price = 380.750000
+------------------------------------
+
+  (Old SignedUp Customer) Name : Mubashir		Checkout Date and Time: Thu Jan 04 21:31:28 2024
+ID     |     Name     |  Price  | Quantity
+GC_201 | Rice         | 342.68  | 1  
+			Total Purchase Price = 342.675000
+------------------------------------
+  (New Customer ) Name : Obaid		Checkout Date and Time: Fri Jan 05 15:51:23 2024
+ID     |     Name     |  Price  | Quantity
+DD_101 | Milk         | 500.50  | 1  
+GC_201 | Rice         | 380.75  | 1  
+			Total Purchase Price = 881.250000
+------------------------------------
+  (Old SignedUp Customer) Name : Obaid		Checkout Date and Time: Fri Jan 05 20:34:50 2024
+ID     |     Name     |  Price  | Quantity
+DD_111 | MilkPack     | 190.53  | 2  
+			Total Purchase Price = 190.530000 (With 0% Discount
+------------------------------------
+  (Old SignedUp Customer) Name : Obaid		Checkout Date and Time: Fri Jan 05 21:27:37 2024
+ID     |     Name     |  Price  | Quantity
+DD_111 | MilkPack     | 95.27   | 1  
+			Total Purchase Price = 95.265000 (With 10.000000% Discount)
+------------------------------------
