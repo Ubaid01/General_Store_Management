@@ -394,6 +394,21 @@ void displayDiscounts(void) {
     }
 }
 
+void checkTransactions(void) {
+    FILE *file = fopen("Records.txt", "r") ;
+
+    if(file == NULL) {
+        gotoxy( 20, 18 ) ;
+        printf("\033[1;31mError opening file %s for writing.\033[0m\n", "Records.bin");
+        return;
+    }
+
+    char info ;
+    while( ( info = fgetc(file) ) != EOF ) {
+        printf("%c", info ) ;
+    }
+}
+
 // Functions for admin interface
 struct Admin adminUser = {"admin", "pass123"}; // Sample password
 
@@ -410,17 +425,19 @@ void manageInventory(void) {
     do {
         gotoxy(15,3);
         printf("========Inventory Management========\n");
-        gotoxy(20,5);
+        gotoxy(20,4);
         printf("1. Add Item\n");
-        gotoxy(20,7);
+        gotoxy(20,6);
         printf("2. Remove Item\n");
-        gotoxy(20,9); 
+        gotoxy(20,8); 
         printf("3. Update Item Quantity\n");
-        gotoxy(20,11); 
+        gotoxy(20,10); 
         printf("4. Display Inventory\n");
-        gotoxy(20,13); 
+        gotoxy(20,12); 
+        printf("5. Display All Transactions\n");
+        gotoxy(20,14); 
         printf("0. Back to Admin Menu\n");
-        gotoxy(20,15); 
+        gotoxy(20,16); 
         printf("Enter your choice: ");
         scanf("%d", &choice);
         fflush( stdin ) ;
@@ -495,15 +512,22 @@ void manageInventory(void) {
                 getch( ) ;
                 system("cls") ;
                 break;
+            case 5: 
+                system("cls") ;
+                checkTransactions() ;
+                printf("\n\033[1;33;5mPress any key to go back.\033[0m\n") ;
+                getch( ) ;
+                fflush(stdin) ;
+                system("cls") ;
             case 0:
-                gotoxy(20,18);
+                gotoxy(20,19);
                 printf("Returning to Admin Menu...\n");
                 Sleep(1750) ;
                 system("cls");
                 break;
             default:
                 fflush(stdin) ;
-                gotoxy(20,18);
+                gotoxy(20,19);
                 printf("\033[1;31mInvalid choice! Please enter a valid option..\033[0m\n");
                 break ;
         }
@@ -537,7 +561,7 @@ void manageCustomers(void) {
                 printf("Enter customer name: ");
                 gotoxy(20,19);
                 fgets(newCustomer.name, sizeof(newCustomer.name), stdin ) ;
-                newCustomer.name[ strcspn( newCustomer.name,"\n" ) ] = '\0' ; // strcspn to calculate occurences in 1st string before 2nd string occurrs.
+                newCustomer.name[ strcspn( newCustomer.name,"\n" ) ] = '\0' ;
                 gotoxy( 20 , 21 ) ;
                 printf("Enter customer phone_number: ") ;
                 fgets(newCustomer.phoneNumber, sizeof(newCustomer.phoneNumber), stdin ) ;
@@ -549,7 +573,7 @@ void manageCustomers(void) {
                         printf("\033[1;31m%s Phone_Number is already registered.\n\t\t\t\tPlease Try Again!\033[0m\n", newCustomer.phoneNumber ) ;
                         Sleep( 2000 ) ;
                         system("cls") ;
-                        return ;
+                        return 1 ;
                     }
                 }
                 addCustomer(newCustomer);
@@ -789,6 +813,7 @@ void adminMenu(void) {
                 case 5:
                     gotoxy(20,20);
                     printf("Exiting Admin Menu.\n");
+                    Sleep(1750) ;
                     system("cls") ;
                     break;
                 default:
@@ -1113,7 +1138,7 @@ void shopping(struct Customer customer) {
 
                     // Perform checkout - Reset the cart
                     gotoxy(0 , ++row ) ;
-                    printf("\n\033[1;33;5mCheckout completed. Thanks you for shopping!\nWe hope to see you again soon!(Regards M.OBAID)\033[0m\n") ;
+                    printf("\n\033[1;33;5mCheckout completed. Thanks you for shopping!\nWe hope to see you again soon!\033[0m(Regards Developer Obaid)\n") ;
                     getch( ) ;
                     system("cls") ;
                     for (int i = 0; i < cartItemCount; ++i) {
@@ -1147,6 +1172,7 @@ void shopping(struct Customer customer) {
     } while (choice != 0);
 }
 
+
 int main() {
     struct Customer newCustomer;
     char customerPhoneNum[20] ;
@@ -1159,15 +1185,13 @@ int main() {
         gotoxy(20, 3);
         printf("========= GENERAL STORE MANAGEMENT SYSTEM =========\n");
         gotoxy(20, 4);
-	    printf("\t      ********************************");
+	    printf("\t      ********************************\n");
         gotoxy(35, 7) ;
 	    printf("DEVELOPED BY M.OBAID");
-        gotoxy(101, 0) ;
-        printf("Further Credits: \n") ;
-        gotoxy(101, 2) ;
+        gotoxy(93, 0) ;
+        printf("Admin Formattion Credits: \n") ;
+        gotoxy(93, 1) ;
         printf("AKHYAR AHMED\n") ;
-        gotoxy(101, 3) ;
-        printf("QAZI ASIM KAMAL\n") ;
         gotoxy(25, 10);
         printf("1. New Customer Shopping\n");
         gotoxy(25, 12);
