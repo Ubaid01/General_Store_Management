@@ -1113,7 +1113,7 @@ void shopping(struct Customer customer) {
 
                     // Perform checkout - Reset the cart
                     gotoxy(0 , ++row ) ;
-                    printf("\n\033[1;33;5mCheckout completed. Thanks you for shopping!\nWe hope to see you again soon!(Credits OBAID)\033[0m\n") ;
+                    printf("\n\033[1;33;5mCheckout completed. Thanks you for shopping!\nWe hope to see you again soon!(Regards M.OBAID)\033[0m\n") ;
                     getch( ) ;
                     system("cls") ;
                     for (int i = 0; i < cartItemCount; ++i) {
@@ -1162,6 +1162,12 @@ int main() {
 	    printf("\t      ********************************");
         gotoxy(35, 7) ;
 	    printf("DEVELOPED BY M.OBAID");
+        gotoxy(101, 0) ;
+        printf("Further Credits: \n") ;
+        gotoxy(101, 2) ;
+        printf("AKHYAR AHMED\n") ;
+        gotoxy(101, 3) ;
+        printf("QAZI ASIM KAMAL\n") ;
         gotoxy(25, 10);
         printf("1. New Customer Shopping\n");
         gotoxy(25, 12);
