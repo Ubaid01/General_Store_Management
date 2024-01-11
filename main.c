@@ -2,7 +2,6 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <windows.h>
 #include <time.h>
 
@@ -1280,22 +1279,18 @@ int main() {
     int choice;
     loadCustomersWithDiscountsFromFile( ) ;
     loadInventoryFromFile("inventory_data.txt");
+    gotoxy(85, 0) ;
+    printf("Admin Interface Formatting Credits: ") ;
+    gotoxy(96, 2) ;
+    printf("AKHYAR AHMED\n") ;
 
     do {
         gotoxy(20, 3);
         printf("========= GENERAL STORE MANAGEMENT SYSTEM =========\n");
         gotoxy(20, 4);
 	    printf("\t      ********************************\n");
-        gotoxy(99, 0) ;
-        printf("Developing Credits: ") ;
-        gotoxy(99, 1) ;
-	    printf("M.OBAID");
-        gotoxy(99, 2) ;
-        printf("AKHYAR AHMED\n") ;
-        gotoxy(99, 3) ;
-        printf("QAZI ASIM KAMAL\n") ;
-        gotoxy(99, 4) ;
-        printf("M.REHAN AZAM\n") ;
+        gotoxy(35, 7) ;
+	    printf("DEVELOPED BY M.OBAID");
         gotoxy(23, 10);
         printf("1. New Customer Shopping\n");
         gotoxy(23, 12);
