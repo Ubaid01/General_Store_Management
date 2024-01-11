@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <windows.h>
 #include <time.h>
 
@@ -27,16 +28,53 @@ struct Discount {
     double discountPercentage ;
 } ;
 
+
 // Define structure for admin
 struct Admin {
     char username[50];
     char password[50];
 };
 
-// Functions for managing inventory items
-#define MAX_ITEMS 100 // Maximum number of items in inventory
+void gotoxy(int x, int y) ;
 
-struct Item inventory[MAX_ITEMS]; // Array to hold inventory items
+// Inventory management Functions
+void displayInventory(void);
+void addItem(struct Item newItem) ;
+void removeItem(char *itemId) ;
+void modifyItem(char *itemId) ;
+void manageInventory(void) ;
+void loadInventoryFromFile(const char *fileName) ;
+void updateInventoryFile(const char *fileName) ;
+void checkTransactions(void) ;
+
+// Customer management Functions
+void addCustomer(struct Customer newCustomer) ;
+void removeCustomer(int customerId) ;
+void displayCustomers(void) ;
+void manageCustomers(void);
+void loadCustomersWithDiscountsFromFile(void);
+void writeCustomersWithDiscountsToFile(void) ;
+
+// Discounts management Functions
+void addDiscount(int customerId, double discountPercentage) ;
+void removeDiscount(int customerId) ;
+double getDiscount(int customerId) ;
+void displayDiscounts(void) ;
+void manageDiscounts(void) ;
+
+// Admin Functions
+void adminMenu(void) ;
+void changeAdminKeys(void) ;
+int authenticateAdmin(char *username, char *password) ;
+
+// Shopping Functions
+void storeCheckoutRecords(struct Item *cart, int cartItemCount, char *name, int customerId, double *checkoutPrices) ;
+void shopping(struct Customer customer) ;
+
+// Functions for managing inventory items
+#define MAX_ITEMS 100 
+
+struct Item inventory[MAX_ITEMS]; // Array to hold all inventory items
 int itemCount = 0; // To track the current number of items in inventory
 
 // Was given in OLD Turbo C but declared for new 64-bit compilers as ConsoleCursor function is part of windows.h
@@ -169,36 +207,101 @@ void removeItem(char *itemId) {
     }
 }
 
-void updateItemQuantity(char *itemId, int newQuantity) {
-    int found = 0;
+void modifyItem(char *itemId) {
+    int itemIndex = -1;
+
     for (int i = 0; i < itemCount; ++i) {
-        if ( strcmp ( inventory[i].id , itemId ) == 0 ) {
-            inventory[i].quantity = newQuantity;
-            found = 1;
-            gotoxy(20,22);
-            printf("\033[1;32mItem quantity updated!\033[0m\n") ;
-            Sleep(1750) ;
-            updateInventoryFile("inventory_data.txt") ;
+        if (strcmp(inventory[i].id, itemId) == 0) {
+            itemIndex = i;
             break;
         }
     }
 
-    if (!found) {
-        gotoxy(20,22);
+    if (itemIndex == -1) {
+        gotoxy( 20 , 20 ) ;
         printf("\033[1;31mItem with ID %s not found in inventory. Update failed\033[0m\n", itemId);
-        Sleep(2000) ;
+        Sleep(2000);
+        return;
     }
+
+    char userChoice[20];
+    gotoxy( 20 , 20 ) ;
+    printf("Enter which thing to update (Quantity or Price or Both): ");
+    fgets(userChoice, sizeof(userChoice), stdin);
+    userChoice[strcspn(userChoice, "\n")] = '\0';
+
+    if (strcasecmp(userChoice, "quantity") == 0) {
+        int newQuantity;
+        gotoxy( 20 , 22 ) ;
+        printf("Enter new quantity: ");
+        if (scanf("%d", &newQuantity) != 1) {
+            fflush(stdin) ;
+            gotoxy( 20 , 24 ) ;
+            printf("\033[1;31mInvalid input for quantity. Update failed\033[0m\n");
+            Sleep(2000);
+            return;
+        }
+        inventory[itemIndex].quantity = newQuantity;
+    } 
+    else if (strcasecmp(userChoice, "price") == 0) {
+        double newPrice;
+        gotoxy( 20 , 22 ) ;
+        printf("Enter new price: ");
+        if (scanf("%lf", &newPrice) != 1) {
+            fflush(stdin) ;
+            gotoxy( 20 , 24 ) ;
+            printf("\033[1;31mInvalid input for price. Update failed\033[0m\n");
+            Sleep(2000);
+            return;
+        }
+        inventory[itemIndex].price = newPrice;
+    } 
+    else if (strcasecmp(userChoice, "both") == 0) {
+        int newQuantity;
+        gotoxy( 20 , 22 ) ;
+        printf("Enter new quantity: ");
+        if (scanf("%d", &newQuantity) != 1) {
+            fflush(stdin) ;
+            gotoxy( 20 , 24 ) ;
+            printf("\033[1;31mInvalid input for quantity. Update failed\033[0m\n");
+            Sleep(2000);
+            return;
+        }
+        inventory[itemIndex].quantity = newQuantity;
+
+        double newPrice;
+        gotoxy( 20 , 24 ) ;
+        printf("Enter new price: ");
+        if (scanf("%lf", &newPrice) != 1) {
+            fflush(stdin) ;
+            gotoxy( 20 , 26 ) ;
+            printf("\033[1;31mInvalid input for price. Update failed\033[0m\n");
+            Sleep(2000);
+            return;
+        }
+        inventory[itemIndex].price = newPrice;
+    } 
+    else {
+        gotoxy( 20 , 22 ) ;
+        printf("\033[1;31mWrong Choice Entered!\033[0m\n");
+        return;
+    }
+
+    gotoxy( 18 , 26 ) ;
+    printf("\033[1;32mItem modified to %d quantity and %.2lf price!\033[0m\n", inventory[itemIndex].quantity, inventory[itemIndex].price);
+    Sleep(1750);
+    updateInventoryFile("inventory_data.txt");
 }
 
 // Functions for managing customers
-#define MAX_CUSTOMERS 150 // Maximum number of customers
+#define MAX_CUSTOMERS 150 
 
-struct Customer customers[MAX_CUSTOMERS]; // Array to hold customer details
+struct Customer customers[MAX_CUSTOMERS]; // Array to hold all customer details
 int customerCount = 0; // Variable to track the current number of customers
 
-#define MAX_DISCOUNTS 100 // Maximum number of discounts
-
-struct Discount discounts[MAX_DISCOUNTS]; // Array to hold discounts
+// Functions for managing discounted customers
+#define MAX_DISCOUNTS 100 
+struct Discount discounts[MAX_DISCOUNTS]; // Array to hold all discounts
 int discountCount = 0; // Variable to track the current number of discounts
 
 void loadCustomersWithDiscountsFromFile(void) {
@@ -412,6 +515,7 @@ void checkTransactions(void) {
 // Functions for admin interface
 struct Admin adminUser = {"admin", "pass123"}; // Sample password
 
+
 int authenticateAdmin(char *username, char *password) {
     if (strcmp(username, adminUser.username) == 0 && strcmp(password, adminUser.password) == 0) 
         return 1; 
@@ -430,7 +534,7 @@ void manageInventory(void) {
         gotoxy(20,6);
         printf("2. Remove Item\n");
         gotoxy(20,8); 
-        printf("3. Update Item Quantity\n");
+        printf("3. Modify Item\n");
         gotoxy(20,10); 
         printf("4. Display Inventory\n");
         gotoxy(20,12); 
@@ -493,15 +597,12 @@ void manageInventory(void) {
             case 3: {
                 char itemId[20] ;
                 int newQuantity ;
+                double newPrice ;
                 gotoxy(20,18);
-                printf("Enter item ID to update quantity: ");
+                printf("Enter item ID to update: ");
                 fgets(itemId, sizeof(itemId), stdin) ;
                 itemId[ strcspn( itemId, "\n" ) ] = '\0' ;
-                gotoxy( 20 , 20 );
-                printf("Enter new quantity: ");
-                scanf("%d", &newQuantity);
-                fflush(stdin);
-                updateItemQuantity(itemId, newQuantity);
+                modifyItem(itemId);
                 system("cls") ;
                 break;
             }
@@ -573,7 +674,7 @@ void manageCustomers(void) {
                         printf("\033[1;31m%s Phone_Number is already registered.\n\t\t\t\tPlease Try Again!\033[0m\n", newCustomer.phoneNumber ) ;
                         Sleep( 2000 ) ;
                         system("cls") ;
-                        return 1 ;
+                        return ;
                     }
                 }
                 addCustomer(newCustomer);
@@ -867,7 +968,7 @@ void storeCheckoutRecords(struct Item *cart, int cartItemCount, char *name, int 
         fprintf(file, "ID     |     Name     |  Price  | Quantity\n");
         for (int i = 0; i < cartItemCount; ++i) {
             fprintf(file, "%-6s | %-12s | %-7.2lf | %-3d\n", cart[i].id, cart[i].name, cart[i].price, cart[i].quantity);
-            totalPrice += cart[i].price ;
+            totalPrice += checkoutPrices[i] ;
         }
             fprintf(file, "\t\t\tTotal Purchase Price = %lf\n", totalPrice ) ;
     }
@@ -1172,7 +1273,6 @@ void shopping(struct Customer customer) {
     } while (choice != 0);
 }
 
-
 int main() {
     struct Customer newCustomer;
     char customerPhoneNum[20] ;
@@ -1186,21 +1286,25 @@ int main() {
         printf("========= GENERAL STORE MANAGEMENT SYSTEM =========\n");
         gotoxy(20, 4);
 	    printf("\t      ********************************\n");
-        gotoxy(35, 7) ;
-	    printf("DEVELOPED BY M.OBAID");
-        gotoxy(93, 0) ;
-        printf("Admin Formattion Credits: \n") ;
-        gotoxy(93, 1) ;
+        gotoxy(99, 0) ;
+        printf("Developing Credits: ") ;
+        gotoxy(99, 1) ;
+	    printf("M.OBAID");
+        gotoxy(99, 2) ;
         printf("AKHYAR AHMED\n") ;
-        gotoxy(25, 10);
+        gotoxy(99, 3) ;
+        printf("QAZI ASIM KAMAL\n") ;
+        gotoxy(99, 4) ;
+        printf("M.REHAN AZAM\n") ;
+        gotoxy(23, 10);
         printf("1. New Customer Shopping\n");
-        gotoxy(25, 12);
+        gotoxy(23, 12);
         printf("2. Existing Customer Shopping\n");
-        gotoxy(25, 14);
+        gotoxy(23, 14);
         printf("3. Admin Menu\n");
-        gotoxy(25, 16);
+        gotoxy(23, 16);
         printf("0. Exit\n");
-        gotoxy(25, 18);
+        gotoxy(23, 18);
         printf("\nEnter your choice: ");
         scanf("%d", &choice);
         fflush(stdin) ; // Used flush buffer where necessary to remove white spaces or new lines wrongly given in integer to avoid code breakage
@@ -1213,38 +1317,57 @@ int main() {
                 printf("\n\nEnter customer name: ");
                 fgets(newCustomer.name, sizeof(newCustomer.name), stdin ) ;
                 newCustomer.name[ strcspn( newCustomer.name, "\n" ) ] = '\0' ;
+                int check = 1 ;
                 printf("\n\nEnter customer phone number: ");
                 fgets(newCustomer.phoneNumber, sizeof(newCustomer.phoneNumber), stdin ) ;
                 newCustomer.phoneNumber[ strcspn( newCustomer.phoneNumber, "\n" ) ] = '\0' ;
-                fflush( stdin );
-                printf("\n\nSet PIN for customer authentication: ");
-                scanf("%d", &newCustomer.pin);
-                fflush( stdin );
-
-                for(int i = 0; i < customerCount; ++i) {
-                    if( strcmp ( newCustomer.phoneNumber , customers[i].phoneNumber ) == 0 ) {
-                        gotoxy(15, 18) ;
-                        // ANSI escape code for red text
-                        printf("\033[1;31m%s Phone_Number is already registered.\n\t\t\t\tPlease Try Again!\033[0m\n", newCustomer.phoneNumber ) ;
-                        return 1 ;
+                fflush( stdin ) ;
+                for(int i = 0; i < strlen( newCustomer.phoneNumber); ++i) {
+                    if( ! ( newCustomer.phoneNumber[i] >= '0' && newCustomer.phoneNumber[i] <= '9' || ( newCustomer.phoneNumber[0] == '+' || newCustomer.phoneNumber[i] == '-' ) ) ) { 
+                        check = 0  ;
+                        break ;
                     }
                 }
 
-                system("cls");
-                printf("PLEASE WAIT....\n\nYOUR DATA IS BEING PROCESSED....");
-                Sleep( 1500 ) ;
+                if( check == 1 ) {
+                    char c ;
+                    printf("\n\nSet PIN for customer authentication(Only Numbers): ");
+                    while( ( scanf("%d", &newCustomer.pin) ) != 1 ) {
+                        printf("\033[1;31mInvalid input.Please enter a valid number.\033[0m\n") ;
+                        while(( c = getchar() )!= '\n' && c != EOF ) ;
+                        fflush( stdin );
+                    }
 
-                gotoxy(30, 10);
+                    for(int i = 0; i < customerCount; ++i) {
+                        if( strcmp ( newCustomer.phoneNumber , customers[i].phoneNumber ) == 0 ) {
+                            gotoxy(15, 18) ;
+                            // ANSI escape code for red text
+                            printf("\033[1;31m%s Phone_Number is already registered.\n\t\t\t\tPlease Try Again!\033[0m\n", newCustomer.phoneNumber ) ;
+                            return 1 ;
+                        }
+                    }
 
-                printf("ACCOUNT CREATED SUCCESSFULLY....");
-                gotoxy(0, 20);
-                addCustomer(newCustomer);
-                printf("Press enter to login");
+                    system("cls");
+                    printf("PLEASE WAIT....\n\nYOUR DATA IS BEING PROCESSED....");
+                    Sleep( 1500 ) ;
 
-	            getch();
-                // Perform shopping for the new customer
-                system("cls") ;
-                shopping(newCustomer);
+                    gotoxy(30, 10);
+
+                    printf("ACCOUNT CREATED SUCCESSFULLY....");
+                    gotoxy(0, 20);
+                    addCustomer(newCustomer);
+                    printf("Press enter to login");
+
+                    getch();
+                    // Perform shopping for the new customer
+                    system("cls") ;
+                    shopping(newCustomer) ;
+                }
+                else {
+                    printf("\033[1;31mPhone Number Format is wrong !\nCan start with (+ code) and contain hypens(-) but now other alphabets or characters.\033[0m\n") ;
+                    Sleep(2250) ;
+                    system("cls") ;
+                }
                 break;
             case 2:
                 system("cls") ;

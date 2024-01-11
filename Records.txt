@@ -53,10 +53,22 @@ GC_201 | Rice         | 380.75  | 1
   (Old SignedUp Customer) Name : Obaid		Checkout Date and Time: Fri Jan 05 20:34:50 2024
 ID     |     Name     |  Price  | Quantity
 DD_111 | MilkPack     | 190.53  | 2  
-			Total Purchase Price = 190.530000 (With 0% Discount
+			Total Purchase Price = 190.530000 (With 0% Discount)
 ------------------------------------
   (Old SignedUp Customer) Name : Obaid		Checkout Date and Time: Fri Jan 05 21:27:37 2024
 ID     |     Name     |  Price  | Quantity
 DD_111 | MilkPack     | 95.27   | 1  
 			Total Purchase Price = 95.265000 (With 10.000000% Discount)
+------------------------------------
+
+  (Old SignedUp Customer) Name : Obaid		Checkout Date and Time: Mon Jan 08 12:53:06 2024
+ID     |     Name     |  Price  | Quantity
+DD_123 | Almonds      | 675.00  | 1  
+			Total Purchase Price = 675.000000 (With 10.000000% Discount)
+------------------------------------
+
+  (New Customer ) Name : Sir Mubashir		Checkout Date and Time: Mon Jan 08 16:06:54 2024
+ID     |     Name     |  Price  | Quantity
+SK_301 | Chips        | 57.00   | 3  
+			Total Purchase Price = 171.000000
 ------------------------------------
