@@ -1130,7 +1130,7 @@ void shopping(struct Customer customer) {
                 } 
                 else {
                     system("cls") ;
-                    printf("\033[1;31mItem not found or insufficient quantity in inventory.\033[0m\n");
+                                        printf("\033[1;31mItem not found or insufficient quantity in inventory.\033[3;32m(Max-%d Quantity In Stock).\033[0m\n", inventory[itemIndex].quantity);
                 }
                 break;
             }
@@ -1233,7 +1233,7 @@ void shopping(struct Customer customer) {
                     }
                     gotoxy(0 , ++row ) ;
                     if( discount > 0 ) 
-                        printf("\n\033[1;31mTotal Checkout Price(With %lf%%-Discount): %.2lf\033[0m\n",discount, totalCheckoutPrice) ;
+                        printf("\n\033[1;31mTotal Checkout Price(With %.2lf%%-Discount): %.2lf\033[0m\n",discount, totalCheckoutPrice) ;
                     else 
                         printf("\n\033[1;31mTotal Checkout Price: %.2lf\033[0m\n", totalCheckoutPrice) ;
 
