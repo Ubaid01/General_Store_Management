@@ -788,17 +788,25 @@ void changeAdminKeys( void ) {
     gotoxy( 20, 4 );
     printf("Enter the previous password for admin : ") ;
     
-    for (int i = 0; i < 49; i++) { // Limiting input to 49 characters to avoid buffer overflow
-        char ch = getch() ;
-        if (ch != 13) {
-            existingPass[i] = ch;
-            printf("*"); // Masking the input
+    int i = 0;
+        while (i < 49) { 
+            if (_kbhit()) {
+                char ch = _getch() ;
+                if (ch == 13) { 
+                    existingPass[i] = '\0'; 
+                    break;
+                } else if (ch == 8) { 
+                    if (i > 0) {
+                        printf("\b \b"); 
+                        i--;
+                    }
+                } else {
+                    existingPass[i] = ch;
+                    printf("*"); 
+                    i++;
+                }
+            }
         }
-        else {
-            existingPass[i] = '\0'; // Null-terminate the password string (To avoid Buffer overflow)
-            break;
-        }
-    }
 
     gotoxy( 0 , 7 ) ;
     printf("PLEASE WAIT!!\n\n\t\t\033[1;33;5mVALIDATING CREDENTIALS...\033[0m\n") ;
@@ -854,18 +862,26 @@ void adminMenu(void) {
     gotoxy(24,10);
     printf("Enter Admin Password: ");
     
-    for (int i = 0; i < 50; i++) {
-		char ch = getch();
-		if (ch != 13) { // If character is not ENTER KEY (\r For Conio) then
-			password[i] = ch;
-			ch = '*'; 
-			printf("%c", ch); // Visually print start but first store in password
-		}
-		else {
-            password[i] = '\0' ;
-			break;
+    int i = 0;
+    while (i < 49) { 
+        if (_kbhit()) {
+            char ch = _getch() ;
+            if (ch == 13) { // If character is not ENTER KEY (\r For Conio) then
+                password[i] = '\0';
+                break;
+            } else if (ch == 8) { // Backspace
+                if (i > 0) {
+                    printf("\b \b"); // Move cursor back, erase character, move cursor back again
+                    i--;
+                }
+            } else {
+                password[i] = ch;
+                printf("*"); // Masking the input
+                i++;
+            }
         }
-	}
+    }
+
     gotoxy( 0, 14 ) ;
     printf("PLEASE WAIT....\n\nYOUR DATA IS BEING PROCESSED....");
     Sleep( 1500 ) ;
