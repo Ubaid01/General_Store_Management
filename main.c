@@ -89,6 +89,26 @@ void gotoxy(int x, int y) {
     SetConsoleCursorPosition(hConsoleOutput, dwCursorPosition);
 }
 
+// Function to print formatted headings
+void printMenu( char name[ ] ) {
+    printf("\033[1;36m") ;
+    for(int i = 0; i < 16 ; ++i ){
+        Sleep(50);
+        printf("\xDB");
+    }
+
+    for(int i = 0; i < strlen(name) ; ++i ){
+        Sleep(60);
+        printf(" %c", name[i] );
+    }
+
+    for(int i = 0; i < 16; i++){
+        Sleep(50);
+        printf("\xDB");
+    }
+    printf("\033[0m") ; // To reset to default color.
+}
+
 void loadInventoryFromFile(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -115,10 +135,11 @@ void displayInventory(void) {
     }
 
     int row = 5 ;
-    gotoxy( 55, 1 ) ;
-    printf("Inventory-Dashboard:\n");
-    gotoxy( 55, 2 ) ;
-    printf("********************\n") ;
+    gotoxy( 29, 1 ) ;
+    printMenu("INVENTORY-DASHBOARD ") ;
+    // printf("Inventory-Dashboard:\n");
+    // gotoxy( 55, 2 ) ;
+    // printf("********************\n") ;
     gotoxy( 45 , row ) ;
     printf("ID     |     Name     |  Price  | Quantity\n");
     for (int i = 0; i < itemCount; i++) {
@@ -400,9 +421,10 @@ void displayCustomers(void) {
     }
     int row = 5;
     gotoxy(15,2);
-    printf("==========Customers Dasboard==========\n");
-    gotoxy(15,3);
-    printf("\t\t ******************\n") ;
+    printMenu("CUSTOMERS-DASHBOARD ") ;
+    // printf("==========Customers Dasboard==========\n");
+    // gotoxy(15,3);
+    // printf("\t\t ******************\n") ;
     gotoxy(20,4);
     printf("ID |     Name     | Phone_Num\n");
     for (int i = 0; i < customerCount; ++i) {
@@ -484,10 +506,11 @@ double getDiscount(int customerId) {
 
 void displayDiscounts(void) {
     int row = 10 ;
-    gotoxy( 50, 5 ) ;
-    printf("--- All Discounts ---\n");
-    gotoxy( 50, 6 ) ;
-    printf("    ************\n") ;
+    gotoxy( 32, 5 ) ;
+    printMenu("ALL DISCOUNTEES ") ;
+    // printf("--- All Discounts ---\n");
+    // gotoxy( 50, 6 ) ;
+    // printf("    ************\n") ;
 
     gotoxy( 50, 8 ) ;
     printf("|Customer ID|Discount %%|\n");
@@ -851,9 +874,10 @@ void adminMenu(void) {
 
     system("cls");
     gotoxy(20,5);
-    printf("========Authentication For Admin========");
-    gotoxy(18,6);
-    printf("*********************************************\n");
+    printMenu( "Authentication For Admin ") ;
+    // printf("========Authentication For Admin========");
+    // gotoxy(18,6);
+    // printf("*********************************************\n");
     gotoxy(24,8);
     printf("Enter Admin Username: ");
     fgets(username, sizeof(username), stdin) ;
@@ -1003,10 +1027,11 @@ void shopping(struct Customer customer) {
     char *NewCustomer = customer.name ;
 
     do {
-        gotoxy(25, 3);
-        printf("Shopping-Menu:\n");
-        gotoxy(25, 4);
-	    printf("_____________") ;
+        gotoxy(30, 3);
+        printMenu("SHOPPING MENU ") ;
+        // printf("Shopping-Menu:\n");
+        // gotoxy(25, 4);
+	    // printf("_____________") ;
         gotoxy( 20, 7 ) ;
         printf("1. Display Whole-Inventory\n");
         gotoxy( 20, 9 ) ;
@@ -1039,10 +1064,11 @@ void shopping(struct Customer customer) {
                 system("cls") ;
                 int category_choice ;
                 gotoxy( 10, 1 ) ;
-                printf("Section-Wise Inventory\n") ;
-                gotoxy( 10, 2 ) ;
-	            printf("______________________\n\n") ;
-                printf("1. Dairy\n\n") ;
+                printMenu("SECTION-WISE INVENTORY ") ;
+                // printf("Section-Wise Inventory\n") ;
+                // gotoxy( 10, 2 ) ;
+	            // printf("______________________\n\n") ;
+                printf("\n\n1. Dairy\n\n") ;
                 printf("2. Grains_and_cooking_products\n\n") ;
                 printf("3. Snacks\n\n") ;
                 printf("4. Beverages\n\n") ;
@@ -1146,7 +1172,7 @@ void shopping(struct Customer customer) {
                 } 
                 else {
                     system("cls") ;
-                                        printf("\033[1;31mItem not found or insufficient quantity in inventory.\033[3;32m(Max-%d Quantity In Stock).\033[0m\n", inventory[itemIndex].quantity);
+                    printf("\033[1;31mItem not found or insufficient quantity in inventory.\033[3;32m(Max-%d Quantity In Stock).\033[0m\n", inventory[itemIndex].quantity);
                 }
                 break;
             }
@@ -1296,16 +1322,14 @@ int main() {
     int choice;
     loadCustomersWithDiscountsFromFile( ) ;
     loadInventoryFromFile("inventory_data.txt");
-    gotoxy(85, 0) ;
-    printf("Admin Interface Formating Credits: ") ;
-    gotoxy(95, 2) ;
-    printf("AKHYAR AHMED\n") ;
 
     do {
-        gotoxy(20, 3);
-        printf("========= GENERAL STORE MANAGEMENT SYSTEM =========\n");
-        gotoxy(20, 4);
-	    printf("\t      ********************************\n");
+        // gotoxy(20, 3);
+        // printf("========= GENERAL STORE MANAGEMENT SYSTEM =========\n");
+        // gotoxy(20, 4);
+	    // printf("\t      ********************************\n");
+        gotoxy(13, 2) ;
+        printMenu("GENERAL STORE MANAGEMENT SYSTEM ") ;
         gotoxy(35, 7) ;
 	    printf("DEVELOPED BY M.OBAID");
         gotoxy(23, 10);
@@ -1424,7 +1448,7 @@ int main() {
                 adminMenu();
                 break;
             case 0:
-                printf("Thanks For Using Our App.\nExiting...\n");
+                printf("\nThanks For Using Our App.\nRegards Developer Obaid and Admin Interface Formatter Akhyar\nExiting...\n");
                 break;
             default:
                 system("cls") ;
